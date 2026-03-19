@@ -1,46 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Happy Birthday ❤️</title>
+  <title>Happy Birthday My Love ❤️</title>
   <style>
     body {
       text-align: center;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       background: linear-gradient(to right, pink, lightblue);
       color: white;
-      padding-top: 100px;
+      overflow-x: hidden;
+      padding-top: 50px;
     }
-    h1 {
-      font-size: 50px;
-    }
-    p {
-      font-size: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
+    h1 { font-size: 50px; }
+    p { font-size: 20px; }
+    button { padding: 10px 20px; font-size: 18px; border: none; border-radius: 10px; background: red; color: white; }
+    /* Hearts animation */
+    .heart {
+      position: absolute;
+      width: 20px; height: 20px;
       background: red;
-      color: white;
+      transform: rotate(45deg);
+      animation: float 5s linear infinite;
     }
+    .heart:after, .heart:before {
+      content: "";
+      position: absolute;
+      width: 20px; height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart:before { top: -10px; left: 0; }
+    .heart:after { left: 10px; top: 0; }
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-600px) rotate(45deg); opacity: 0; }
+    }
+    /* Slideshow */
+    .slideshow { max-width: 300px; margin: 20px auto; border-radius: 20px; }
   </style>
 </head>
 <body>
 
-<h1>Happy Birthday My Love 🎂❤️</h1>
+<h1>Happy Birthday My Love ❤️</h1>
 <p>You are the best thing in my life 💕</p>
 
-<button onclick="showMessage()">Click Me 🎁</button>
+<!-- Photo Slideshow -->
+<img class="slideshow" src="https://YOUR_IMAGE_URL_1" alt="Photo 1">
+<img class="slideshow" src="https://YOUR_IMAGE_URL_2" alt="Photo 2" style="display:none;">
 
-<p id="hiddenMessage" style="display:none;">
-  I love you forever ❤️ Thanks for being in my life 😘
-</p>
+<!-- Button Surprise -->
+<button onclick="showMessage()">Click Me 🎁</button>
+<p id="hiddenMessage" style="display:none;">I love you forever ❤️ Thanks for being in my life 😘</p>
+
+<!-- Countdown -->
+<p id="countdown"></p>
+
+<!-- Background Music -->
+<audio id="bgMusic" autoplay loop>
+  <source src="https://YOUR_SONG_URL.mp3" type="audio/mpeg">
+</audio>
 
 <script>
+/* Show surprise message */
 function showMessage() {
   document.getElementById("hiddenMessage").style.display = "block";
 }
+
+/* Countdown Timer */
+const countdownElement = document.getElementById("countdown");
+const birthday = new Date();
+birthday.setHours(24,0,0,0); // next midnight
+setInterval(() => {
+  const now = new Date();
+  let diff = birthday - now;
+  let h = Math.floor(diff / 1000 / 60 / 60);
+  let m = Math.floor(diff / 1000 / 60) % 60;
+  let s = Math.floor(diff / 1000) % 60;
+  countdownElement.innerHTML = `Countdown to Surprise: ${h}h ${m}m ${s}s`;
+}, 1000);
+
+/* Photo Slideshow */
+let slideIndex = 0;
+const slides = document.querySelectorAll(".slideshow");
+function showSlides() {
+  slides.forEach((s, i) => s.style.display = "none");
+  slideIndex++;
+  if(slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 3000);
+}
+showSlides();
+
+/* Random Hearts */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 500);
 </script>
 
 </body>
